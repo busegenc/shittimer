@@ -27,7 +27,9 @@ Ana ekranın üstündeki 💩 / 🕹️ / 🌸 düğmeleriyle anında değişir,
 - "Satın Alımları Geri Yükle" düğmesi var (App Store non-consumable ürünlerde zorunlu).
 - Yerel test için [ShitTimer.storekit](ShitTimer.storekit) yapılandırması ve onu kullanan paylaşımlı şema hazır — Xcode'dan çalıştırınca gerçek satın alma akışı (fiyat, onay, geri yükleme) sahte mağazayla denenebilir.
 
-**Yayına almadan önce:** App Store Connect'te aynı Product ID ile non-consumable ürünü oluşturup fiyatlandırmak ve `Product.products(for:)`'un gerçek fiyatı çektiğini doğrulamak gerekiyor. `StoreManager.priceText` içindeki `₺79,99 / $1.99` yalnızca DEBUG derlemesinde, mağaza yokken arayüzü görebilmek için duruyor. Değiştirmek için `ContentView`'daki `@AppStorage("appTheme") private var themeRaw = AppTheme.poop.rawValue` satırı yeterli.
+**Yayına almadan önce:** App Store Connect'te aynı Product ID ile non-consumable ürünü oluşturup fiyatlandırmak ve `Product.products(for:)`'un gerçek fiyatı çektiğini doğrulamak gerekiyor. `StoreManager.priceText` içindeki `₺79,99 / $1.99` yalnızca DEBUG derlemesinde, mağaza yokken arayüzü görebilmek için duruyor.
+
+Varsayılan temayı değiştirmek için `ContentView`'daki `@AppStorage("appTheme") private var themeRaw = AppTheme.poop.rawValue` satırı yeterli.
 
 Eşik aşıldıkça halkanın ortasındaki emoji sertleşiyor (ör. Kaka teması: 💩 → 🧻 → 😅 → 😰 → ☠️) ve o eşiğin mesajı ekranda kart olarak da beliriyor — bildirimi kaçıran görsün diye.
 
@@ -60,8 +62,16 @@ xcrun simctl launch booted com.busegenc.shittimer
 
 > `xcrun simctl launch` ile verilen argümanlar **sonraki açılışlara da taşınır**. Argümansız test etmek için anlamsız bir argüman (`--noop`) vererek eski listeyi geçersiz kıl.
 
-## Bilinen ortam notları (bu Mac)
-- **iOS 26.2 simülatör runtime yüklü değil** (yalnızca iOS 18.2 var). Xcode 26.2'nin `actool`'u bu yüzden asset kataloğunu derleyemiyor; katalog geçici olarak `Assets.xcassets.disabled` olarak proje köküne taşındı ve `ASSETCATALOG_*` ayarları kaldırıldı. Runtime'ı yükleyince (`xcodebuild -downloadPlatform iOS` veya Xcode > Settings > Components) klasörü `ShitTimer/Assets.xcassets` olarak geri taşıyıp ayarları ekleyerek ikon eklenebilir. Şema-tabanlı `xcodebuild -scheme` derlemesi de aynı sebepten destinasyon bulamıyor; `-target` + `-sdk iphonesimulator` çalışıyor.
+## App Store'a çıkış
+
+Adım adım rehber: **[APPSTORE.md](APPSTORE.md)**. Yayın için gereken teknik parçalar projede hazır:
+
+- **Uygulama ikonu** — `Assets.xcassets/AppIcon.appiconset/AppIcon.png`, 1024×1024, alfa kanalsız (App Store şartı). Şu anki ikon kahverengi degrade üzerine 💩; yerine tasarlanmış bir görsel koyarsan aynı ada/boyuta sadık kal.
+- **Gizlilik manifesti** — [PrivacyInfo.xcprivacy](ShitTimer/PrivacyInfo.xcprivacy): veri toplanmıyor, `UserDefaults` erişimi `CA92.1` gerekçesiyle beyan edildi.
+- **Şifreleme beyanı** — `ITSAppUsesNonExemptEncryption = false`, her yüklemede tekrar sorulmaz.
+- Hem `-sdk iphonesimulator` hem `-sdk iphoneos` (Release) derlemesi ve şema üzerinden derleme doğrulandı.
+
+Yayına çıkmadan verilecek kararlar: mağaza adı (`ShitTimer` riskli / `Sit Happens` güvenli), IAP fiyatı, 6.9" ekran görüntüleri, destek ve gizlilik politikası URL'leri.
 
 ## V1 sonrası (spec'ten)
 Karakter/ton seçimi, paylaşılabilir kartlar, Watch, leaderboard, otomatik algılama, freemium.
