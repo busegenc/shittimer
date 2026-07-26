@@ -136,6 +136,10 @@ final class TimerManager: ObservableObject {
     // MARK: - Bildirimler
 
     private func requestPermissionAndSchedule() {
+        #if DEBUG
+        // Pazarlama ekran görüntülerinde izin diyaloğu araya girmesin
+        if CommandLine.arguments.contains("--marketing") { return }
+        #endif
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { [weak self] granted, _ in
             Task { @MainActor in
@@ -150,7 +154,7 @@ final class TimerManager: ObservableObject {
         center.removeAllPendingNotificationRequests()
         for threshold in Threshold.allCases {
             let content = UNMutableNotificationContent()
-            content.title = "ShitTimer"
+            content.title = L10n.appTitle
             content.body = MessagePool.nextMessage(for: threshold)
             content.sound = .default
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: threshold.seconds, repeats: false)

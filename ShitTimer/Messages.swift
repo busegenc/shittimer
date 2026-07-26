@@ -143,7 +143,11 @@ enum MessagePool {
 enum L10n {
     private static var tr: Bool { MessagePool.isTurkish }
 
-    static var appTitle: String { tr ? "ShitTimer" : "ShitTimer" }
+    /// Kullanıcıya görünen ad. Mağaza adıyla aynı olmalı — App Store'da
+    /// "ShitTimer" adı 1.1.1 kapsamında riskli olduğu için "Sit Happens".
+    /// Çalışma adına dönmek istersen tek değişecek yer burası ve
+    /// pbxproj'daki INFOPLIST_KEY_CFBundleDisplayName.
+    static var appTitle: String { "Sit Happens" }
     static var start: String { tr ? "BAŞLAT" : "START" }
     static var stop: String { tr ? "BİTİR" : "DONE" }
     static var sessionActive: String { tr ? "Sayaç çalışıyor..." : "The clock is ticking..." }
