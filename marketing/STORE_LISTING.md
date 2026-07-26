@@ -156,7 +156,12 @@ Uygulama içi satın alma (com.busegenc.shittimer.themepack) iki ek görsel tema
 
 ## Ekran görüntüleri
 
-`marketing/screenshots/` — 1320×2868 (6.9"), App Store Connect'e doğrudan yüklenebilir:
+İki boyut hazır — App Store Connect hangi slotu istiyorsa onu kullan:
+
+- `marketing/screenshots/` — **1320×2868 (6.9")**
+- `marketing/screenshots/6.5-inch/` — **1284×2778 (6.5")**
+
+Dosyalar:
 
 1. `01-sayac.png` — çalışan sayaç ve laf kartı
 2. `02-saglik-uyarisi.png` — 30+ dakika, sağlık hatırlatması
