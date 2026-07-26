@@ -66,7 +66,7 @@ xcrun simctl launch booted com.busegenc.shittimer
 
 Adım adım rehber: **[APPSTORE.md](APPSTORE.md)**. Yayın için gereken teknik parçalar projede hazır:
 
-- **Uygulama ikonu** — `Assets.xcassets/AppIcon.appiconset/AppIcon.png`, 1024×1024, alfa kanalsız (App Store şartı). Şu anki ikon kahverengi degrade üzerine 💩; yerine tasarlanmış bir görsel koyarsan aynı ada/boyuta sadık kal.
+- **Uygulama ikonu** — `Assets.xcassets/AppIcon.appiconset/AppIcon.png`, 1024×1024, alfa kanalsız (App Store şartı). Koyu kahve degrade zemin, altın ilerleme halkası ve ortada 💩 — uygulamanın sayaç ekranındaki halka motifiyle aynı dil. Yeniden üretmek veya değiştirmek için: `swift marketing/make-icon.swift ShitTimer/Assets.xcassets/AppIcon.appiconset/AppIcon.png`
 - **Gizlilik manifesti** — [PrivacyInfo.xcprivacy](ShitTimer/PrivacyInfo.xcprivacy): veri toplanmıyor, `UserDefaults` erişimi `CA92.1` gerekçesiyle beyan edildi.
 - **Şifreleme beyanı** — `ITSAppUsesNonExemptEncryption = false`, her yüklemede tekrar sorulmaz.
 - Hem `-sdk iphonesimulator` hem `-sdk iphoneos` (Release) derlemesi ve şema üzerinden derleme doğrulandı.
