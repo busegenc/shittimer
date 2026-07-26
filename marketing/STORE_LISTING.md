@@ -126,7 +126,12 @@ Sitting for a long time genuinely isn't great for you. This is not a health app,
 | Görünen ad | Tema Paketi | Theme Pack |
 | Açıklama | Arcade ve Pastel temalarının kilidini açar. Tek seferlik satın alma, abonelik yok. | Unlocks the Arcade and Pastel themes. One-time purchase, no subscription. |
 
-**Review Screenshot:** `marketing/screenshots/05-tema-paketi.png`
+**Review Screenshot:** `marketing/screenshots/iap-review-640x920.png`
+
+> App Store Connect, IAP inceleme görselinde mağaza ekran görüntülerinden farklı boyut istiyor;
+> 6.9" görüntü (1320×2868) "dimensions are wrong" hatası veriyor. `iap-review-640x920.png`
+> bu iş için üretildi (gerilme yok, yanlarda tema renginde dolgu). Kabul edilmezse yedek:
+> `iap-review-1242x2208.png`.
 
 **Review Notes:**
 ```
