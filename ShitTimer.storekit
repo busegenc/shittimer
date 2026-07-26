@@ -1,0 +1,35 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "TP000001",
+      "localizations" : [
+        {
+          "description" : "Unlock the Arcade and Pastel themes. One-time purchase, no subscription.",
+          "displayName" : "Theme Pack",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Arcade ve Pastel temalarının kilidini açar. Tek seferlik satın alma, abonelik yok.",
+          "displayName" : "Tema Paketi",
+          "locale" : "tr_TR"
+        }
+      ],
+      "productID" : "com.busegenc.shittimer.themepack",
+      "referenceName" : "Theme Pack",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
