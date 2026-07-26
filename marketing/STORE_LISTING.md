@@ -140,6 +140,27 @@ Tek seferlik (non-consumable) satın alma. Uygulamanın ücretsiz temasına ek o
 
 ---
 
+## URL'ler (App Store Connect'te zorunlu)
+
+| Alan | URL |
+|---|---|
+| Support URL | https://busegenc.github.io/sit-happens-support/ |
+| Privacy Policy URL | https://busegenc.github.io/sit-happens-support/privacy.html |
+
+Sayfalar ayrı bir public depoda: [busegenc/sit-happens-support](https://github.com/busegenc/sit-happens-support)
+(kaynak kod deposu private kalsın diye). Yerel kopya: `~/sit-happens-support`, bu depodaki
+`docs/` klasörüyle aynı içerik.
+
+---
+
+## Diğer zorunlu alanlar
+
+- **Content Rights**: üçüncü taraf içerik yok → "No"
+- **Primary Category**: Utilities · **Secondary**: Entertainment
+- **Age Rating**: kaba mizah "Infrequent/Mild", diğer tüm sorular "None" → 12+ bekleniyor
+
+---
+
 ## App Review Information (sürüm gönderiminde)
 
 Demo hesap gerekmiyor (giriş yok). Notes alanına:
