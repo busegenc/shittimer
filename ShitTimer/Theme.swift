@@ -1,39 +1,39 @@
 import SwiftUI
 
-/// Uygulamanın görsel kimliği. Kullanıcı ana ekrandaki emoji düğmelerinden seçer,
+/// Uygulamanın görsel kimliği. Kullanıcı ana ekrandaki renk noktalarından seçer,
 /// seçim UserDefaults'ta ("appTheme") saklanır.
 enum AppTheme: String, CaseIterable, Identifiable {
-    case poop      // 💩 Kahverengi/altın, şirin ve doğrudan
-    case arcade    // 🕹️ Neon retro arcade
-    case pastel    // 🌸 Pastel, yumuşak, "cute"
+    case classic   // Kahverengi/altın, sade ve sıcak
+    case arcade    // Neon retro arcade
+    case pastel    // Pastel, yumuşak
 
     var id: String { rawValue }
 
-    /// Yalnızca Kaka teması ücretsiz; diğerleri tema paketiyle açılır.
-    var isFree: Bool { self == .poop }
+    /// Yalnızca Klasik tema ücretsiz; diğerleri tema paketiyle açılır.
+    var isFree: Bool { self == .classic }
 
     /// Paywall'da temayı tanıtan kısa açıklama
     var tagline: String {
         let tr = MessagePool.isTurkish
         switch self {
-        case .poop: return tr ? "Klasik. Kahve, altın, biraz utanmazlık." : "The classic. Brown, gold, zero shame."
+        case .classic: return tr ? "Sıcak kahve tonları, altın halka." : "Warm browns with a golden ring."
         case .arcade: return tr ? "Neon retro. Ekran kaydı alanların favorisi." : "Retro neon. Made for screen recordings."
         case .pastel: return tr ? "Yumuşak ve şirin. Konuyu kibarca hatırlatır." : "Soft and cute. Nags you politely."
         }
     }
 
-    /// Tema seçici düğmesinde görünen emoji
-    var pickerEmoji: String {
+    /// Tema seçici düğmesindeki renk noktası (görsel yerine renk örneği)
+    var swatch: Color {
         switch self {
-        case .poop: return "💩"
-        case .arcade: return "🕹️"
-        case .pastel: return "🌸"
+        case .classic: return Color(hex: 0xFFC857)
+        case .arcade: return Color(hex: 0x39FF14)
+        case .pastel: return Color(hex: 0xFF8FAB)
         }
     }
 
     var displayName: String {
         switch self {
-        case .poop: return MessagePool.isTurkish ? "Kaka" : "Poop"
+        case .classic: return MessagePool.isTurkish ? "Klasik" : "Classic"
         case .arcade: return "Arcade"
         case .pastel: return MessagePool.isTurkish ? "Pastel" : "Pastel"
         }
@@ -41,7 +41,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var prefersDark: Bool {
         switch self {
-        case .poop, .arcade: return true
+        case .classic, .arcade: return true
         case .pastel: return false
         }
     }
@@ -50,7 +50,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var background: LinearGradient {
         switch self {
-        case .poop:
+        case .classic:
             return LinearGradient(colors: [Color(hex: 0x5A3A22), Color(hex: 0x2E1B10)],
                                   startPoint: .top, endPoint: .bottom)
         case .arcade:
@@ -64,7 +64,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var primaryText: Color {
         switch self {
-        case .poop: return Color(hex: 0xFFF3E0)
+        case .classic: return Color(hex: 0xFFF3E0)
         case .arcade: return Color(hex: 0x39FF14)
         case .pastel: return Color(hex: 0x5B3A46)
         }
@@ -72,7 +72,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var secondaryText: Color {
         switch self {
-        case .poop: return Color(hex: 0xD8B48C)
+        case .classic: return Color(hex: 0xD8B48C)
         case .arcade: return Color(hex: 0xFF4FD8)
         case .pastel: return Color(hex: 0xA1748A)
         }
@@ -80,7 +80,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var ringTrack: Color {
         switch self {
-        case .poop: return Color.white.opacity(0.12)
+        case .classic: return Color.white.opacity(0.12)
         case .arcade: return Color(hex: 0x39FF14).opacity(0.15)
         case .pastel: return Color(hex: 0xFFC2D4).opacity(0.45)
         }
@@ -88,7 +88,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var ringGradient: AngularGradient {
         switch self {
-        case .poop:
+        case .classic:
             return AngularGradient(colors: [Color(hex: 0xFFC857), Color(hex: 0xC98B45), Color(hex: 0xFFC857)],
                                    center: .center)
         case .arcade:
@@ -103,7 +103,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
     /// Başlat düğmesi rengi
     var startTint: Color {
         switch self {
-        case .poop: return Color(hex: 0xFFC857)
+        case .classic: return Color(hex: 0xFFC857)
         case .arcade: return Color(hex: 0x39FF14)
         case .pastel: return Color(hex: 0xFF8FAB)
         }
@@ -111,7 +111,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var startTextColor: Color {
         switch self {
-        case .poop: return Color(hex: 0x3A2413)
+        case .classic: return Color(hex: 0x3A2413)
         case .arcade: return Color(hex: 0x05010D)
         case .pastel: return .white
         }
@@ -119,7 +119,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var stopTint: Color {
         switch self {
-        case .poop: return Color(hex: 0xE2574C)
+        case .classic: return Color(hex: 0xE2574C)
         case .arcade: return Color(hex: 0xFF4FD8)
         case .pastel: return Color(hex: 0xB07BAC)
         }
@@ -127,7 +127,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var cardBackground: Color {
         switch self {
-        case .poop: return Color.white.opacity(0.10)
+        case .classic: return Color.white.opacity(0.10)
         case .arcade: return Color(hex: 0x39FF14).opacity(0.10)
         case .pastel: return .white.opacity(0.75)
         }
@@ -135,7 +135,7 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var glow: Color? {
         switch self {
-        case .poop: return nil
+        case .classic: return nil
         case .arcade: return Color(hex: 0x39FF14)
         case .pastel: return nil
         }
@@ -145,21 +145,21 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     func digitFont(size: CGFloat) -> Font {
         switch self {
-        case .poop, .pastel: return .system(size: size, weight: .heavy, design: .rounded)
+        case .classic, .pastel: return .system(size: size, weight: .heavy, design: .rounded)
         case .arcade: return .system(size: size, weight: .bold, design: .monospaced)
         }
     }
 
     func buttonFont(size: CGFloat) -> Font {
         switch self {
-        case .poop, .pastel: return .system(size: size, weight: .heavy, design: .rounded)
+        case .classic, .pastel: return .system(size: size, weight: .heavy, design: .rounded)
         case .arcade: return .system(size: size, weight: .heavy, design: .monospaced)
         }
     }
 
     var buttonCornerRadius: CGFloat {
         switch self {
-        case .poop: return 30
+        case .classic: return 30
         case .arcade: return 8
         case .pastel: return 34
         }
@@ -169,9 +169,9 @@ enum AppTheme: String, CaseIterable, Identifiable {
     func stageEmoji(_ stage: Int) -> String {
         let set: [String]
         switch self {
-        case .poop:   set = ["💩", "🧻", "😅", "😰", "☠️"]
-        case .arcade: set = ["🚽", "🕹️", "⚠️", "🔥", "💀"]
-        case .pastel: set = ["🚽", "🫧", "😊", "😥", "🥴"]
+        case .classic: set = ["⏱️", "🙂", "😐", "😅", "😰"]
+        case .arcade: set = ["⏱️", "🙂", "⚠️", "🔥", "😰"]
+        case .pastel: set = ["⏱️", "🫧", "😊", "😥", "🥴"]
         }
         return set[min(max(stage, 0), set.count - 1)]
     }

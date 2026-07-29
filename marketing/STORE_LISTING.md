@@ -34,7 +34,7 @@ tuvalet,sayaç,zamanlayıcı,timer,mizah,komik,sağlık,hatırlatıcı,alışkan
 
 **English**
 ```
-toilet,timer,bathroom,poop,funny,humor,health,reminder,habit,break,sit,stopwatch
+toilet,timer,bathroom,funny,humor,health,reminder,habit,break,sit,stopwatch,minutes
 ```
 
 ## Tanıtım metni / Promotional Text (170 karakter, sürüm göndermeden değiştirilebilir)
@@ -72,7 +72,7 @@ NASIL ÇALIŞIR
 • Kişisel rekorun (evet, gurur duyulacak bir şey değil)
 
 ÜÇ TEMA
-Kaka teması ücretsiz gelir. Tema Paketi'ni bir kez satın alarak Arcade (neon retro) ve Pastel (yumuşak ve şirin) temalarını da açabilirsin. Abonelik yok, tek seferlik.
+Klasik tema ücretsiz gelir. Tema Paketi'ni bir kez satın alarak Arcade (neon retro) ve Pastel (yumuşak ve şirin) temalarını da açabilirsin. Abonelik yok, tek seferlik.
 
 TÜRKÇE VE İNGİLİZCE
 Mesajlar çeviri değil. Her iki dilde ayrı ayrı yazıldı, çünkü espri çevrilince espri olmaktan çıkıyor. Uygulama telefonunun diline göre kendini ayarlar.
@@ -103,7 +103,7 @@ STATS
 • Your personal record (not something to be proud of, but here it is)
 
 THREE THEMES
-The Poop theme is free. A one-time Theme Pack purchase unlocks Arcade (retro neon) and Pastel (soft and cute). No subscription.
+The Classic theme is free. A one-time Theme Pack purchase unlocks Arcade (retro neon) and Pastel (soft and cute). No subscription.
 
 TURKISH AND ENGLISH
 The messages aren't translations. They were written separately in each language, because a joke stops being a joke once it's translated. The app follows your phone's language.
@@ -191,3 +191,44 @@ Dosyalar:
 5. `05-tema-paketi.png` — Tema Paketi satın alma ekranı (IAP review görseli olarak da kullanılır)
 
 > Yeniden üretmek için: [README](../README.md) içindeki DEBUG launch argümanları ve `--marketing` bayrağı.
+
+
+---
+
+## 1.1 reddi sonrası (27 Temmuz 2026)
+
+İlk gönderim **Guideline 1.1 — Objectionable Content** gerekçesiyle reddedildi:
+uygulama ikonu ve tema düğmelerindeki karikatür görseller (💩) sorun edildi.
+
+Yapılan değişiklikler (build 1.0 (3)):
+
+- **İkon** tamamen yeniden çizildi: emoji yok, yalnızca vektörel altın halka + saat ibresi
+- **Tema düğmeleri** emoji yerine renk noktası; kilit rozeti SF Symbol
+- **Klasik tema** (eski "Kaka") adı ve tüm 💩 / ☠️ görselleri kaldırıldı; eşik emojileri
+  yalnızca saat ve yüz ifadeleri: ⏱️ 🙂 😐 😅 😰
+- Paywall ve istatistik ekranındaki dekoratif emojiler SF Symbol'e çevrildi
+- Anahtar kelimelerden "poop" çıkarıldı, açıklamada "Kaka teması" → "Klasik tema"
+- Ekran görüntüleri yeni arayüzle yeniden alındı
+
+**App Review'a yanıt olarak gönderilecek not:**
+
+```
+Merhaba,
+
+1.1 kapsamındaki geri bildiriminiz için teşekkürler. Belirtilen içerikleri kaldırdık:
+
+1. Uygulama ikonu tamamen yeniden tasarlandı. Önceki ikondaki karikatür görsel
+   kaldırıldı; yeni ikon yalnızca soyut bir zamanlayıcı halkası ve saat ibresinden
+   oluşuyor.
+2. Ana ekrandaki tema seçim düğmelerindeki karikatür görseller kaldırıldı; düğmeler
+   artık yalnızca temanın rengini gösteren renk noktaları.
+3. Uygulama genelindeki diğer karikatür görseller de kaldırıldı. Kalan simgeler
+   standart saat ve yüz ifadeleridir.
+4. Mağaza metinleri ve ekran görüntüleri yeni arayüze göre güncellendi.
+
+Uygulama, kullanıcının kendi başlattığı bir süre sayacıdır ve uzun süre oturmaya
+karşı mizahi hatırlatmalar gönderir. Rahatsız edici olabilecek görsel içerik
+kalmamıştır.
+
+İyi çalışmalar.
+```

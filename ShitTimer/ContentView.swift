@@ -3,13 +3,13 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var store: StoreManager
-    @AppStorage("appTheme") private var themeRaw = AppTheme.poop.rawValue
+    @AppStorage("appTheme") private var themeRaw = AppTheme.classic.rawValue
     @State private var selectedTab = Self.initialTab
 
     /// Satın alma iptal/iade edilmişse ücretli tema seçili kalmasın.
     private var theme: AppTheme {
-        let stored = AppTheme(rawValue: themeRaw) ?? .poop
-        return (stored.isFree || store.isPremium) ? stored : .poop
+        let stored = AppTheme(rawValue: themeRaw) ?? .classic
+        return (stored.isFree || store.isPremium) ? stored : .classic
     }
 
     private static var initialTab: Int {
@@ -101,9 +101,10 @@ struct TimerView: View {
                         withAnimation(.easeInOut(duration: 0.25)) { themeRaw = option.rawValue }
                     }
                 } label: {
-                    Text(option.pickerEmoji)
-                        .font(.system(size: 22))
-                        .opacity(locked ? 0.45 : 1)
+                    Circle()
+                        .fill(option.swatch)
+                        .frame(width: 20, height: 20)
+                        .opacity(locked ? 0.4 : 1)
                         .frame(width: 46, height: 46)
                         .background(
                             Circle()
@@ -114,14 +115,16 @@ struct TimerView: View {
                         )
                         .overlay(alignment: .bottomTrailing) {
                             if locked {
-                                Text("🔒")
-                                    .font(.system(size: 11))
-                                    .padding(3)
+                                Image(systemName: "lock.fill")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(theme.secondaryText)
+                                    .padding(4)
                                     .background(Circle().fill(theme.cardBackground))
                                     .offset(x: 2, y: 2)
                             }
                         }
                 }
+                .accessibilityLabel(option.displayName)
                 .buttonStyle(.plain)
             }
         }

@@ -13,8 +13,9 @@ struct PaywallView: View {
             VStack(spacing: 20) {
                 Spacer(minLength: 8)
 
-                Text("🔓")
-                    .font(.system(size: 52))
+                Image(systemName: "lock.open.fill")
+                    .font(.system(size: 44))
+                    .foregroundColor(theme.startTint)
 
                 Text(L10n.storeTitle)
                     .font(.system(size: 30, weight: .heavy, design: theme == .arcade ? .monospaced : .rounded))
@@ -97,13 +98,14 @@ private struct ThemeRow: View {
 
     private var badge: String {
         if option.isFree { return L10n.freeBadge }
-        return isPremium ? L10n.unlockedBadge : "🔒"
+        return isPremium ? L10n.unlockedBadge : L10n.lockedBadge
     }
 
     var body: some View {
         HStack(spacing: 14) {
-            Text(option.pickerEmoji)
-                .font(.system(size: 26))
+            Circle()
+                .fill(option.swatch)
+                .frame(width: 22, height: 22)
                 .frame(width: 46, height: 46)
                 .background(Circle().fill(theme.cardBackground))
 

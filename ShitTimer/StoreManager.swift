@@ -2,7 +2,7 @@ import Foundation
 import StoreKit
 
 /// Tema paketi satın alma yönetimi (tek seferlik, non-consumable).
-/// Ücretsiz tema: 💩 Kaka. Arcade ve Pastel satın alma ile açılır.
+/// Ücretsiz tema: Klasik. Arcade ve Pastel satın alma ile açılır.
 @MainActor
 final class StoreManager: ObservableObject {
     static let themePackID = "com.busegenc.shittimer.themepack"

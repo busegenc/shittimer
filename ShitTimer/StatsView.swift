@@ -20,7 +20,7 @@ struct StatsView: View {
                 if timerManager.sessions.isEmpty {
                     Spacer()
                     VStack(spacing: 14) {
-                        Text(theme.stageEmoji(0)).font(.system(size: 56))
+                        Image(systemName: "chart.bar.xaxis").font(.system(size: 48)).foregroundColor(theme.secondaryText)
                         Text(L10n.noData)
                             .font(.headline)
                             .foregroundColor(theme.secondaryText)

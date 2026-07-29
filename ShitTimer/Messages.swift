@@ -189,6 +189,7 @@ enum L10n {
     }
     static var freeBadge: String { tr ? "Ücretsiz" : "Free" }
     static var unlockedBadge: String { tr ? "Açık" : "Unlocked" }
+    static var lockedBadge: String { tr ? "Kilitli" : "Locked" }
 
     static func formatDuration(_ seconds: TimeInterval) -> String {
         let s = Int(seconds)

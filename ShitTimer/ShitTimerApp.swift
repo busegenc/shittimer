@@ -9,7 +9,7 @@ struct ShitTimerApp: App {
 
     init() {
         #if DEBUG
-        // Ekran görüntüsü için tema seçimi: --theme=poop|arcade|pastel
+        // Ekran görüntüsü için tema seçimi: --theme=classic|arcade|pastel
         if let arg = CommandLine.arguments.first(where: { $0.hasPrefix("--theme=") }) {
             UserDefaults.standard.set(String(arg.dropFirst("--theme=".count)), forKey: "appTheme")
         }
