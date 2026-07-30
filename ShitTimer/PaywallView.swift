@@ -65,7 +65,16 @@ struct PaywallView: View {
                         .background(RoundedRectangle(cornerRadius: theme.buttonCornerRadius).fill(theme.startTint))
                     }
                     .buttonStyle(.plain)
-                    .disabled(store.isWorking)
+                    .disabled(store.isWorking || store.product == nil)
+                    .opacity(store.product == nil ? 0.5 : 1)
+
+                    if store.product == nil {
+                        Text(L10n.storeUnavailable)
+                            .font(.footnote)
+                            .foregroundColor(theme.secondaryText)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
 
                     Button(L10n.restoreButton) {
                         Task { await store.restore() }
@@ -88,6 +97,11 @@ struct PaywallView: View {
             }
         }
         .preferredColorScheme(theme.prefersDark ? .dark : .light)
+        .task {
+            // Ekran her açıldığında tekrar dene: ilk açılışta mağazaya
+            // ulaşılamamışsa kullanıcı uygulamayı kapatmadan toparlanır
+            await store.loadProduct()
+        }
     }
 }
 

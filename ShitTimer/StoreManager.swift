@@ -11,6 +11,8 @@ final class StoreManager: ObservableObject {
     @Published private(set) var isPremium: Bool
     @Published var isWorking = false
     @Published var errorMessage: String?
+    /// Ürün mağazadan çekilemedi — satın alma düğmesi pasif gösterilir
+    @Published private(set) var loadFailed = false
 
     private let defaults = UserDefaults.standard
     private let premiumKey = "premiumUnlocked"
@@ -39,19 +41,33 @@ final class StoreManager: ObservableObject {
         }
     }
 
-    /// Mağazadan gelen yerelleştirilmiş fiyat
-    var priceText: String {
+    /// Mağazadan gelen yerelleştirilmiş fiyat; ürün yüklenemediyse nil
+    var priceText: String? {
         if let product { return product.displayPrice }
         #if DEBUG
         // Simülatörde StoreKit yapılandırması yokken arayüzü görebilmek için
         return MessagePool.isTurkish ? "₺79,99" : "$1.99"
         #else
-        return "—"
+        return nil
         #endif
     }
 
+    /// Ürünü mağazadan çeker. Paywall her açıldığında yeniden denenir:
+    /// ağ yoksa veya ürün henüz yayılmadıysa uygulama yeniden başlatılmadan toparlanır.
     func loadProduct() async {
-        product = try? await Product.products(for: [Self.themePackID]).first
+        do {
+            let fetched = try await Product.products(for: [Self.themePackID]).first
+            if let fetched {
+                product = fetched
+                loadFailed = false
+            } else {
+                // Mağaza yanıt verdi ama ürün yok: henüz onaylanmamış ya da
+                // bu ülkede satışa açık değil
+                loadFailed = true
+            }
+        } catch {
+            loadFailed = true
+        }
     }
 
     func purchase() async {

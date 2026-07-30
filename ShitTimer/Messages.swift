@@ -172,8 +172,9 @@ enum L10n {
         tr ? "Arcade ve Pastel temalarının kilidini tek seferlik ödemeyle aç. Abonelik yok, reklam yok."
            : "Unlock the Arcade and Pastel themes with a one-time payment. No subscription, no ads."
     }
-    static func buyButton(_ price: String) -> String {
-        tr ? "Kilidi Aç — \(price)" : "Unlock — \(price)"
+    static func buyButton(_ price: String?) -> String {
+        guard let price else { return tr ? "Kilidi Aç" : "Unlock" }
+        return tr ? "Kilidi Aç — \(price)" : "Unlock — \(price)"
     }
     static var restoreButton: String { tr ? "Satın Alımları Geri Yükle" : "Restore Purchases" }
     static var maybeLater: String { tr ? "Şimdi değil" : "Not now" }
@@ -182,7 +183,8 @@ enum L10n {
            : "One-time purchase. Works on all your devices with the same Apple Account."
     }
     static var storeUnavailable: String {
-        tr ? "Mağazaya şu an ulaşılamıyor, sonra tekrar dene." : "The store isn't reachable right now, try again later."
+        tr ? "Tema paketi şu an mağazadan alınamıyor. Bağlantını kontrol edip biraz sonra tekrar dene."
+           : "The Theme Pack isn't available from the store right now. Check your connection and try again shortly."
     }
     static var nothingToRestore: String {
         tr ? "Geri yüklenecek bir satın alma bulunamadı." : "No previous purchase found to restore."
