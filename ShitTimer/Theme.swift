@@ -9,6 +9,11 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    /// Kullanıcıya gösterilecek temalar — tema paketi kapalıyken yalnızca ücretsiz olan.
+    static var available: [AppTheme] {
+        Features.themePackEnabled ? allCases : [.classic]
+    }
+
     /// Yalnızca Klasik tema ücretsiz; diğerleri tema paketiyle açılır.
     var isFree: Bool { self == .classic }
 

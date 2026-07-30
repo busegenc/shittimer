@@ -8,6 +8,7 @@ struct ContentView: View {
 
     /// Satın alma iptal/iade edilmişse ücretli tema seçili kalmasın.
     private var theme: AppTheme {
+        guard Features.themePackEnabled else { return .classic }
         let stored = AppTheme(rawValue: themeRaw) ?? .classic
         return (stored.isFree || store.isPremium) ? stored : .classic
     }
@@ -43,7 +44,7 @@ struct TimerView: View {
 
     private static var paywallAtLaunch: Bool {
         #if DEBUG
-        return CommandLine.arguments.contains("--paywall")
+        return Features.themePackEnabled && CommandLine.arguments.contains("--paywall")
         #else
         return false
         #endif
@@ -54,8 +55,10 @@ struct TimerView: View {
             theme.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                themePicker
-                    .padding(.top, 8)
+                // Tek tema varken seçici gösterilmez
+                if AppTheme.available.count > 1 {
+                    themePicker.padding(.top, 8)
+                }
 
                 Spacer(minLength: 12)
 
@@ -92,7 +95,7 @@ struct TimerView: View {
 
     private var themePicker: some View {
         HStack(spacing: 10) {
-            ForEach(AppTheme.allCases) { option in
+            ForEach(AppTheme.available) { option in
                 let locked = !option.isFree && !store.isPremium
                 Button {
                     if locked {

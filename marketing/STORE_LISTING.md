@@ -232,3 +232,35 @@ kalmamıştır.
 
 İyi çalışmalar.
 ```
+
+
+---
+
+## Tema paketi kapalı sürüm (build 5) için mağaza metinleri
+
+Banka/sözleşme tarafı tamamlanana kadar uygulama **tek temayla** yayınlanıyor
+(`Features.themePackEnabled = false`). Bu sürümde açıklamada olmayan bir özelliği
+vaat etmemek gerekiyor — aksi halde Guideline 2.3 (yanıltıcı metadata) riski doğar.
+
+**Açıklamadan çıkarılacak bölüm (TR):** "ÜÇ TEMA" başlıklı paragrafın tamamı.
+**Yerine (isteğe bağlı) eklenebilir:**
+
+```
+YAKINDA
+Ek temalar ve daha fazla mesaj üzerinde çalışıyoruz.
+```
+
+**English:** remove the "THREE THEMES" paragraph; optionally add:
+
+```
+COMING SOON
+More themes and more messages are on the way.
+```
+
+**Ekran görüntüleri:** yalnızca 3 tanesi geçerli (tema ve satın alma ekranları kaldırıldı):
+`01-sayac`, `02-saglik-uyarisi`, `03-istatistikler`.
+
+**Anahtar kelimelerde** değişiklik gerekmiyor.
+
+Tema paketi açıldığında: `Features.themePackEnabled = true`, build numarasını artır,
+yukarıdaki paragrafları ve 04/05 ekran görüntülerini geri ekle.
