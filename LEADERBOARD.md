@@ -58,6 +58,25 @@ yalnızca kendi satırını yazabilir. Böylece küresel tablo mümkün olur.
   Türkiye ortalaması" gibi bir karşılaştırma çoğu zaman daha iyi çalışır.
 - **Hile**: sayaç cihazda, skor uydurulabilir. Ödül yoksa sorun değil.
 
+## App Privacy beyanı — hangi kutular
+
+**Şimdiki sürüm (hesap kapalı): "Data Not Collected".** Uygulama hiçbir şeyi
+cihaz dışına göndermiyor. Apple'ın tanımında "toplamak" = veriyi cihazdan
+dışarı iletmek; yalnızca cihazda saklamak toplama sayılmaz.
+
+**Leaderboard'lu sürümde işaretlenecekler (yalnızca bunlar):**
+
+| Kategori | Veri türü | Amaç | Kimliğe bağlı mı | Takip |
+|---|---|---|---|---|
+| Identifiers | User ID | App Functionality | Evet | Hayır |
+| Usage Data | Product Interaction | App Functionality | Evet | Hayır |
+
+- **Name işaretlenmeyecek**: gerçek ad toplamıyoruz. Kullanıcının kendi seçtiği
+  takma ad Apple'ın sınıflandırmasında **User ID** altına girer.
+- **Email Address işaretlenmeyecek**: Apple girişinde e-posta kapsamı hiç
+  istenmiyor (`requestedScopes = []`) ve hiçbir yerde saklanmıyor.
+- **Analytics / Advertising / Personalization işaretlenmeyecek**: hiçbiri yok.
+
 ## Yayına almadan önce zorunlu
 
 1. **App Privacy** beyanı "Data Not Collected" olmaktan çıkacak: kullanıcı kimliği,

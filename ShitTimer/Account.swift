@@ -16,17 +16,18 @@ struct Account: Codable, Equatable {
     /// Sağlayıcıdan gelen kalıcı kullanıcı kimliği
     let id: String
     let provider: AuthProvider
-    /// Apple e-postayı yalnızca ilk girişte veriyor; gizle seçilirse relay adresi gelir
-    var email: String?
     /// Kullanıcının kendi belirlediği ad — tabloda bu görünür
     var username: String?
+
+    // E-posta bilerek saklanmıyor: hiçbir özellik için gerekli değil.
+    // Saklamamak App Privacy beyanını ve KVKK yükümlülüğünü sadeleştiriyor.
 }
 
 /// Arka uçla konuşan katman. Şu an yerel bir taklit uygulama kullanılıyor;
 /// Supabase/Firebase seçimi yapıldığında yalnızca bu protokolün gerçek
 /// uygulaması yazılacak, arayüz tarafı değişmeyecek.
 protocol AccountBackend {
-    func register(id: String, provider: AuthProvider, email: String?) async throws -> Account
+    func register(id: String, provider: AuthProvider) async throws -> Account
     func isUsernameAvailable(_ username: String) async throws -> Bool
     func setUsername(_ username: String, for account: Account) async throws
     func deleteAccount(_ account: Account) async throws
@@ -53,8 +54,8 @@ enum AccountError: LocalizedError {
 struct LocalAccountBackend: AccountBackend {
     private let takenKey = "takenUsernames"
 
-    func register(id: String, provider: AuthProvider, email: String?) async throws -> Account {
-        Account(id: id, provider: provider, email: email, username: nil)
+    func register(id: String, provider: AuthProvider) async throws -> Account {
+        Account(id: id, provider: provider, username: nil)
     }
 
     func isUsernameAvailable(_ username: String) async throws -> Bool {
@@ -98,10 +99,10 @@ final class AccountStore: ObservableObject {
         #if DEBUG
         if CommandLine.arguments.contains("--signed-out") { signOut() }
         if CommandLine.arguments.contains("--needs-username") {
-            account = Account(id: "debug", provider: .apple, email: nil, username: nil)
+            account = Account(id: "debug", provider: .apple, username: nil)
         }
         if CommandLine.arguments.contains("--signed-in") {
-            account = Account(id: "debug", provider: .apple, email: nil, username: "buse")
+            account = Account(id: "debug", provider: .apple, username: "buse")
         }
         #endif
     }
@@ -115,7 +116,7 @@ final class AccountStore: ObservableObject {
                 errorMessage = AccountError.failed("Beklenmeyen kimlik türü").errorDescription
                 return
             }
-            await register(id: credential.user, provider: .apple, email: credential.email)
+            await register(id: credential.user, provider: .apple)
         case .failure(let error):
             // Kullanıcı vazgeçtiyse hata gösterme
             if (error as? ASAuthorizationError)?.code == .canceled { return }
@@ -128,11 +129,11 @@ final class AccountStore: ObservableObject {
         errorMessage = AccountError.notConfigured.errorDescription
     }
 
-    private func register(id: String, provider: AuthProvider, email: String?) async {
+    private func register(id: String, provider: AuthProvider) async {
         isWorking = true
         defer { isWorking = false }
         do {
-            account = try await backend.register(id: id, provider: provider, email: email)
+            account = try await backend.register(id: id, provider: provider)
             persist()
         } catch {
             errorMessage = error.localizedDescription
