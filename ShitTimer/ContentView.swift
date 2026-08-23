@@ -6,6 +6,17 @@ struct ContentView: View {
     @AppStorage("appTheme") private var themeRaw = AppTheme.classic.rawValue
     @StateObject private var accountStore = AccountStore()
     @State private var selectedTab = Self.initialTab
+    /// Dil değişince metinler yeniden hesaplansın diye kökte dinleniyor
+    @AppStorage(AppLanguage.storageKey) private var languageRaw = AppLanguage.system.rawValue
+    @State private var showSettings = Self.settingsAtLaunch
+
+    private static var settingsAtLaunch: Bool {
+        #if DEBUG
+        return CommandLine.arguments.contains("--settings")
+        #else
+        return false
+        #endif
+    }
 
     /// Satın alma iptal/iade edilmişse ücretli tema seçili kalmasın.
     private var theme: AppTheme {
@@ -28,17 +39,21 @@ struct ContentView: View {
             TimerView(theme: theme, themeRaw: $themeRaw)
                 .tabItem { Label(L10n.timerTab, systemImage: "timer") }
                 .tag(0)
-            StatsView(theme: theme)
+            StatsView(theme: theme, onOpenSettings: { showSettings = true })
                 .tabItem { Label(L10n.statsTitle, systemImage: "chart.bar.fill") }
                 .tag(1)
             if Features.accountsEnabled {
-                LeaderboardView(theme: theme, store: accountStore)
+                LeaderboardView(theme: theme, store: accountStore, onOpenSettings: { showSettings = true })
                     .tabItem { Label(L10n.leaderboardTab, systemImage: "trophy.fill") }
                     .tag(2)
             }
         }
         .tint(theme.startTint)
         .preferredColorScheme(theme.prefersDark ? .dark : .light)
+        .sheet(isPresented: $showSettings) {
+            SettingsView(theme: theme, accountStore: accountStore)
+        }
+        .id(languageRaw)   // dil değişiminde arayüzü tazele
     }
 }
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct StatsView: View {
     let theme: AppTheme
+    var onOpenSettings: () -> Void = {}
     @EnvironmentObject var timerManager: TimerManager
 
     var body: some View {
@@ -9,13 +10,21 @@ struct StatsView: View {
             theme.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                Text(L10n.statsTitle)
-                    .font(.system(size: 32, weight: .heavy, design: theme == .arcade ? .monospaced : .rounded))
-                    .foregroundColor(theme.primaryText)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 16)
-                    .padding(.bottom, 20)
+                HStack {
+                    Text(L10n.statsTitle)
+                        .font(.system(size: 32, weight: .heavy, design: theme == .arcade ? .monospaced : .rounded))
+                        .foregroundColor(theme.primaryText)
+                    Spacer()
+                    Button(action: onOpenSettings) {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 22))
+                            .foregroundColor(theme.secondaryText)
+                    }
+                    .accessibilityLabel(L10n.settingsTitle)
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 16)
+                .padding(.bottom, 20)
 
                 if timerManager.sessions.isEmpty {
                     Spacer()

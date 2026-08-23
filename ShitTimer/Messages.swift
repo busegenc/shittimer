@@ -19,9 +19,34 @@ enum Threshold: Int, CaseIterable, Codable {
     }
 }
 
+/// Uygulama dili. Varsayılan cihaz dili; kullanıcı Ayarlar'dan sabitleyebilir.
+enum AppLanguage: String, CaseIterable, Identifiable {
+    case system, turkish, english
+
+    static let storageKey = "appLanguage"
+    var id: String { rawValue }
+
+    static var current: AppLanguage {
+        AppLanguage(rawValue: UserDefaults.standard.string(forKey: storageKey) ?? "") ?? .system
+    }
+
+    /// Seçenekler kendi dillerinde yazılır; sistem seçeneği arayüz diline uyar.
+    var displayName: String {
+        switch self {
+        case .system: return MessagePool.isTurkish ? "Sistem dili" : "System language"
+        case .turkish: return "Türkçe"
+        case .english: return "English"
+        }
+    }
+}
+
 enum MessagePool {
     static var isTurkish: Bool {
-        Locale.preferredLanguages.first?.hasPrefix("tr") ?? false
+        switch AppLanguage.current {
+        case .turkish: return true
+        case .english: return false
+        case .system: return Locale.preferredLanguages.first?.hasPrefix("tr") ?? false
+        }
     }
 
     private static let tr: [Threshold: [String]] = [
@@ -189,6 +214,28 @@ enum L10n {
     static var nothingToRestore: String {
         tr ? "Geri yüklenecek bir satın alma bulunamadı." : "No previous purchase found to restore."
     }
+    // Ayarlar
+    static var settingsTitle: String { tr ? "Ayarlar" : "Settings" }
+    static var languageSection: String { tr ? "Dil" : "Language" }
+    static var languageNote: String {
+        tr ? "Bildirim mesajları da seçtiğin dilde gelir."
+           : "Notification messages follow this setting too."
+    }
+    static var accountSection: String { tr ? "Hesap" : "Account" }
+    static var notSignedIn: String { tr ? "Giriş yapılmadı" : "Not signed in" }
+    static var signedInWith: String { tr ? "ile giriş yapıldı" : "signed in" }
+    static var notificationsSection: String { tr ? "Bildirimler" : "Notifications" }
+    static var openSystemSettings: String { tr ? "iOS Ayarları'nda aç" : "Open in iOS Settings" }
+    static var notificationsNote: String {
+        tr ? "Eşik bildirimlerini açıp kapatmak için sistem ayarlarını kullan."
+           : "Use system settings to turn threshold notifications on or off."
+    }
+    static var aboutSection: String { tr ? "Hakkında" : "About" }
+    static var supportLink: String { tr ? "Destek" : "Support" }
+    static var privacyLink: String { tr ? "Gizlilik politikası" : "Privacy policy" }
+    static var versionLabel: String { tr ? "Sürüm" : "Version" }
+    static var done: String { tr ? "Bitti" : "Done" }
+
     // Hesap ve tablo
     static var loginTitle: String { tr ? "Tabloya katıl" : "Join the leaderboard" }
     static var loginSubtitle: String {

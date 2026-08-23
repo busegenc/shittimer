@@ -4,8 +4,8 @@ import SwiftUI
 struct LeaderboardView: View {
     let theme: AppTheme
     @ObservedObject var store: AccountStore
+    var onOpenSettings: () -> Void = {}
     @EnvironmentObject var timerManager: TimerManager
-    @State private var showDeleteConfirm = false
 
     var body: some View {
         Group {
@@ -29,14 +29,12 @@ struct LeaderboardView: View {
                         .font(.system(size: 30, weight: .heavy, design: theme == .arcade ? .monospaced : .rounded))
                         .foregroundColor(theme.primaryText)
                     Spacer()
-                    Menu {
-                        Button(L10n.signOut) { store.signOut() }
-                        Button(L10n.deleteAccount, role: .destructive) { showDeleteConfirm = true }
-                    } label: {
-                        Image(systemName: "person.crop.circle")
-                            .font(.system(size: 24))
+                    Button(action: onOpenSettings) {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 22))
                             .foregroundColor(theme.secondaryText)
                     }
+                    .accessibilityLabel(L10n.settingsTitle)
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 16)
@@ -70,12 +68,6 @@ struct LeaderboardView: View {
 
                 Spacer()
             }
-        }
-        .confirmationDialog(L10n.deleteAccountConfirm, isPresented: $showDeleteConfirm, titleVisibility: .visible) {
-            Button(L10n.deleteAccount, role: .destructive) {
-                Task { await store.deleteAccount() }
-            }
-            Button(L10n.cancel, role: .cancel) {}
         }
     }
 

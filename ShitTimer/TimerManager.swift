@@ -149,15 +149,25 @@ final class TimerManager: ObservableObject {
         }
     }
 
+    /// Dil değiştiğinde çağrılır: zaten zamanlanmış bildirimler eski dilde
+    /// kalmasın diye kalan eşikler yeniden yazılır.
+    func rescheduleNotifications() {
+        guard isRunning, !notificationsDenied else { return }
+        scheduleNotifications()
+    }
+
     private func scheduleNotifications() {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
         for threshold in Threshold.allCases {
+            // Geçmiş eşikler yeniden zamanlanmaz
+            let remaining = threshold.seconds - elapsed
+            guard remaining > 0 else { continue }
             let content = UNMutableNotificationContent()
             content.title = L10n.appTitle
             content.body = MessagePool.nextMessage(for: threshold)
             content.sound = .default
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: threshold.seconds, repeats: false)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: remaining, repeats: false)
             let request = UNNotificationRequest(id: "threshold-\(threshold.rawValue)",
                                                 content: content, trigger: trigger)
             center.add(request)
