@@ -12,4 +12,16 @@ enum Features {
     /// Banka/vergi tarafı tamamlanınca `true` yap, build numarasını artır
     /// ve yeni sürümü gönder; ürün App Store Connect'te zaten hazır.
     static let themePackEnabled = false
+
+    /// Hesap + tablo (leaderboard).
+    ///
+    /// Şu an yalnızca giriş, kullanıcı adı ve kendi satırın çalışıyor; arkadaş
+    /// listesi gerçek bir arka uç bağlandığında açılacak. Yayına almadan önce
+    /// yapılması gerekenler için bkz. LEADERBOARD.md.
+    static var accountsEnabled: Bool {
+        #if DEBUG
+        if CommandLine.arguments.contains("--accounts") { return true }
+        #endif
+        return false
+    }
 }

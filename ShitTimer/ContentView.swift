@@ -4,6 +4,7 @@ struct ContentView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var store: StoreManager
     @AppStorage("appTheme") private var themeRaw = AppTheme.classic.rawValue
+    @StateObject private var accountStore = AccountStore()
     @State private var selectedTab = Self.initialTab
 
     /// Satın alma iptal/iade edilmişse ücretli tema seçili kalmasın.
@@ -15,6 +16,7 @@ struct ContentView: View {
 
     private static var initialTab: Int {
         #if DEBUG
+        if CommandLine.arguments.contains("--tab=board") { return 2 }
         return CommandLine.arguments.contains("--tab=stats") ? 1 : 0
         #else
         return 0
@@ -29,6 +31,11 @@ struct ContentView: View {
             StatsView(theme: theme)
                 .tabItem { Label(L10n.statsTitle, systemImage: "chart.bar.fill") }
                 .tag(1)
+            if Features.accountsEnabled {
+                LeaderboardView(theme: theme, store: accountStore)
+                    .tabItem { Label(L10n.leaderboardTab, systemImage: "trophy.fill") }
+                    .tag(2)
+            }
         }
         .tint(theme.startTint)
         .preferredColorScheme(theme.prefersDark ? .dark : .light)

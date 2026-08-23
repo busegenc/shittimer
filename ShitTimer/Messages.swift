@@ -189,6 +189,45 @@ enum L10n {
     static var nothingToRestore: String {
         tr ? "Geri yüklenecek bir satın alma bulunamadı." : "No previous purchase found to restore."
     }
+    // Hesap ve tablo
+    static var loginTitle: String { tr ? "Tabloya katıl" : "Join the leaderboard" }
+    static var loginSubtitle: String {
+        tr ? "Kullanıcı adı belirle, arkadaşlarını ekle ve haftalık ortalamanızı karşılaştırın. Kısa olan kazanır."
+           : "Pick a username, add friends and compare weekly averages. Shorter wins."
+    }
+    static var continueWithGoogle: String { tr ? "Google ile devam et" : "Continue with Google" }
+    static var loginPrivacyNote: String {
+        tr ? "Yalnızca kullanıcı adın ve oturum sürelerin paylaşılır. Hesabını uygulama içinden istediğin an silebilirsin."
+           : "Only your username and session durations are shared. You can delete your account from inside the app at any time."
+    }
+    static var signInNotConfigured: String {
+        tr ? "Google girişi henüz hazır değil, Apple ile devam edebilirsin."
+           : "Google sign-in isn't ready yet — you can continue with Apple."
+    }
+    static var chooseUsername: String { tr ? "Kullanıcı adın" : "Your username" }
+    static var usernameRules: String {
+        tr ? "3-16 karakter; küçük harf, rakam ve alt çizgi kullanabilirsin."
+           : "3-16 characters: lowercase letters, numbers and underscores."
+    }
+    static var usernameTaken: String { tr ? "Bu kullanıcı adı alınmış, başka bir tane dene." : "That username is taken, try another." }
+    static var continueButton: String { tr ? "Devam" : "Continue" }
+    static var leaderboardTitle: String { tr ? "Tablo" : "Leaderboard" }
+    static var leaderboardTab: String { tr ? "Tablo" : "Board" }
+    static var leaderboardMetric: String {
+        tr ? "Haftalık oturum ortalaması — kısa olan üstte" : "Weekly average per session — shorter is better"
+    }
+    static var you: String { tr ? "sen" : "you" }
+    static var friendsEmpty: String {
+        tr ? "Henüz arkadaşın yok. Arkadaş ekleme yakında açılacak."
+           : "No friends yet. Adding friends is coming soon."
+    }
+    static var signOut: String { tr ? "Çıkış yap" : "Sign out" }
+    static var deleteAccount: String { tr ? "Hesabı sil" : "Delete account" }
+    static var deleteAccountConfirm: String {
+        tr ? "Hesabın ve tablodaki kaydın kalıcı olarak silinecek." : "Your account and leaderboard entry will be permanently deleted."
+    }
+    static var cancel: String { tr ? "Vazgeç" : "Cancel" }
+
     static var freeBadge: String { tr ? "Ücretsiz" : "Free" }
     static var unlockedBadge: String { tr ? "Açık" : "Unlocked" }
     static var lockedBadge: String { tr ? "Kilitli" : "Locked" }
