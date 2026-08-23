@@ -30,8 +30,7 @@ struct LoginView: View {
 
             VStack(spacing: 12) {
                 SignInWithAppleButton(.signIn) { request in
-                    // E-posta istenmiyor: hiçbir özellik için gerekli değil
-                    request.requestedScopes = []
+                    store.prepareAppleRequest(request)
                 } onCompletion: { result in
                     Task { await store.handleAppleSignIn(result) }
                 }

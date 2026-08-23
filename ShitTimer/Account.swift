@@ -1,5 +1,6 @@
 import Foundation
 import AuthenticationServices
+import CryptoKit
 
 enum AuthProvider: String, Codable {
     case apple, google
@@ -83,15 +84,18 @@ final class AccountStore: ObservableObject {
     @Published var isWorking = false
     @Published var errorMessage: String?
 
-    private let backend: AccountBackend
+    let backend: AppBackend
+    /// Apple isteğine SHA256'lanmış hâli gönderilir, sunucuya ham hâli
+    private var currentNonce: String?
     private let defaults = UserDefaults.standard
     private let accountKey = "account"
 
     var isSignedIn: Bool { account != nil }
     var needsUsername: Bool { account != nil && account?.username == nil }
 
-    init(backend: AccountBackend = LocalAccountBackend()) {
-        self.backend = backend
+    init(backend: AppBackend? = nil) {
+        // Supabase yapılandırılmışsa gerçek arka uç, değilse yerel taklit
+        self.backend = backend ?? (SupabaseConfig.isConfigured ? SupabaseBackend() : LocalAccountBackend())
         if let data = defaults.data(forKey: accountKey),
            let decoded = try? JSONDecoder().decode(Account.self, from: data) {
             account = decoded
@@ -109,12 +113,39 @@ final class AccountStore: ObservableObject {
 
     // MARK: - Giriş
 
+    /// Giriş düğmesi isteği hazırlanırken çağrılır.
+    func prepareAppleRequest(_ request: ASAuthorizationAppleIDRequest) {
+        // E-posta istenmiyor: hiçbir özellik için gerekli değil
+        request.requestedScopes = []
+        let nonce = Self.randomNonce()
+        currentNonce = nonce
+        request.nonce = Self.sha256(nonce)
+    }
+
     func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) async {
         switch result {
         case .success(let auth):
             guard let credential = auth.credential as? ASAuthorizationAppleIDCredential else {
                 errorMessage = AccountError.failed("Beklenmeyen kimlik türü").errorDescription
                 return
+            }
+            isWorking = true
+            defer { isWorking = false }
+            // Supabase yapılandırılmışsa Apple jetonu sunucu oturumuna çevrilir
+            if SupabaseConfig.isConfigured {
+                guard let tokenData = credential.identityToken,
+                      let idToken = String(data: tokenData, encoding: .utf8),
+                      let nonce = currentNonce else {
+                    errorMessage = L10n.serverError
+                    return
+                }
+                do {
+                    _ = try await SupabaseClient.shared.signInWithApple(idToken: idToken, nonce: nonce)
+                } catch {
+                    errorMessage = error.localizedDescription
+                    return
+                }
+                currentNonce = nil
             }
             await register(id: credential.user, provider: .apple)
         case .failure(let error):
@@ -193,6 +224,23 @@ final class AccountStore: ObservableObject {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    // MARK: - Nonce
+
+    private static func randomNonce(length: Int = 32) -> String {
+        let charset = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        for _ in 0..<length {
+            var byte: UInt8 = 0
+            _ = SecRandomCopyBytes(kSecRandomDefault, 1, &byte)
+            result.append(charset[Int(byte) % charset.count])
+        }
+        return result
+    }
+
+    private static func sha256(_ input: String) -> String {
+        SHA256.hash(data: Data(input.utf8)).map { String(format: "%02x", $0) }.joined()
     }
 
     private func persist() {

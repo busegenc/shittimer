@@ -214,6 +214,17 @@ enum L10n {
     static var nothingToRestore: String {
         tr ? "Geri yüklenecek bir satın alma bulunamadı." : "No previous purchase found to restore."
     }
+    // Sunucu
+    static var serverNotConfigured: String {
+        tr ? "Sunucu bağlantısı yapılandırılmamış." : "Server connection isn't configured."
+    }
+    static var sessionExpired: String {
+        tr ? "Oturumun sona ermiş, tekrar giriş yap." : "Your session expired, please sign in again."
+    }
+    static var serverError: String {
+        tr ? "Sunucuya ulaşılamadı, biraz sonra tekrar dene." : "Couldn't reach the server, try again shortly."
+    }
+
     // Ayarlar
     static var settingsTitle: String { tr ? "Ayarlar" : "Settings" }
     static var languageSection: String { tr ? "Dil" : "Language" }

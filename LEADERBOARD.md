@@ -87,6 +87,25 @@ dışarı iletmek; yalnızca cihazda saklamak toplama sayılmaz.
 4. **KVKK/GDPR**: veri sorumlusu olunacak; silme talebi akışı hesap silmeyle karşılanıyor.
 5. **Sign in with Apple** capability'si App ID'de açık olmalı (aşağıya bak).
 
+## Supabase — yapılan ve kalan
+
+**Bağlandı:** `SupabaseConfig` proje URL'si ve anon anahtarıyla dolu.
+`SupabaseBackend` kimlik, profil, skor, arkadaşlık, engelleme ve şikayet
+çağrılarını yapıyor (URLSession ile, ek paket yok). Oturum jetonları Keychain'de.
+
+**Doğrulandı (REST üzerinden):**
+- `profiles`, `weekly_scores`, `friendships` var
+- RLS açık ve anonim yazmayı engelliyor
+
+**Kalan — senin çalıştırman gereken:** [supabase/schema.sql](supabase/schema.sql)
+Şu an hiç RLS politikası yok, dolayısıyla giriş yapmış kullanıcılar da yazamıyor.
+Bu dosya politikaları, `reports` tablosunu ve iki görünümü (`friends_leaderboard`,
+`pending_requests`) oluşturuyor. Supabase → SQL Editor'da bir kez çalıştır.
+
+**Kalan — Supabase panelinde:** Authentication → Providers → **Apple**'ı aç,
+"Client IDs" alanına `com.busegenc.shittimer` yaz. Native giriş bu kimlikle
+doğrulanıyor; bu olmadan jeton takası reddedilir.
+
 ## Apple ile giriş: kalan tek adım
 
 `ShitTimer/ShitTimer.entitlements` eklendi ve projeye bağlandı. Çalışması için:
