@@ -264,3 +264,24 @@ More themes and more messages are on the way.
 
 Tema paketi açıldığında: `Features.themePackEnabled = true`, build numarasını artır,
 yukarıdaki paragrafları ve 04/05 ekran görüntülerini geri ekle.
+
+
+---
+
+## 1.1 sürümü — What's New metni
+
+**Türkçe**
+```
+• Ayarlar sayfası eklendi
+• Uygulama dilini artık cihazdan bağımsız seçebilirsin: Sistem dili, Türkçe veya English
+• Bildirim zamanlaması düzeltildi: eşikler artık geçen süreye göre hesaplanıyor
+```
+
+**English**
+```
+• New Settings page
+• You can now pick the app language independently of your device: System, Turkish or English
+• Fixed notification scheduling: thresholds are now calculated from elapsed time
+```
+
+Ekran görüntüsü değişikliği gerekmiyor — mevcut ekranların görünümü aynı.
