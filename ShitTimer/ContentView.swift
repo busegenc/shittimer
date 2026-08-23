@@ -5,6 +5,8 @@ struct ContentView: View {
     @EnvironmentObject var store: StoreManager
     @AppStorage("appTheme") private var themeRaw = AppTheme.classic.rawValue
     @StateObject private var accountStore = AccountStore()
+    @StateObject private var boardStore = LeaderboardStore(
+        backend: SupabaseConfig.isConfigured ? SupabaseBackend() : LocalAccountBackend())
     @State private var selectedTab = Self.initialTab
     /// Dil değişince metinler yeniden hesaplansın diye kökte dinleniyor
     @AppStorage(AppLanguage.storageKey) private var languageRaw = AppLanguage.system.rawValue
@@ -43,7 +45,7 @@ struct ContentView: View {
                 .tabItem { Label(L10n.statsTitle, systemImage: "chart.bar.fill") }
                 .tag(1)
             if Features.accountsEnabled {
-                LeaderboardView(theme: theme, store: accountStore, onOpenSettings: { showSettings = true })
+                LeaderboardView(theme: theme, store: accountStore, board: boardStore, onOpenSettings: { showSettings = true })
                     .tabItem { Label(L10n.leaderboardTab, systemImage: "trophy.fill") }
                     .tag(2)
             }

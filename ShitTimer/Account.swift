@@ -185,6 +185,11 @@ final class AccountStore: ObservableObject {
             errorMessage = L10n.usernameRules
             return false
         }
+        // Tabloda herkese görüneceği için açıkça saldırgan adlar engellenir (1.2)
+        guard ProfanityFilter.isClean(username) else {
+            errorMessage = L10n.usernameNotAllowed
+            return false
+        }
         guard var account else { return false }
         isWorking = true
         defer { isWorking = false }

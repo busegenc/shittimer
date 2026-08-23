@@ -276,9 +276,32 @@ enum L10n {
     }
     static var you: String { tr ? "sen" : "you" }
     static var friendsEmpty: String {
-        tr ? "Henüz arkadaşın yok. Arkadaş ekleme yakında açılacak."
-           : "No friends yet. Adding friends is coming soon."
+        tr ? "Henüz arkadaşın yok. Yukarıdaki + ile kullanıcı adı yazarak ekleyebilirsin."
+           : "No friends yet. Tap + above and add someone by username."
     }
+    static var pendingRequests: String { tr ? "Arkadaşlık istekleri" : "Friend requests" }
+    static var addFriend: String { tr ? "Arkadaş ekle" : "Add friend" }
+    static var addFriendHint: String {
+        tr ? "Arkadaşının kullanıcı adını yaz. İsteği kabul edince tabloda birbirinizi görürsünüz."
+           : "Enter your friend's username. Once they accept, you'll see each other on the board."
+    }
+    static var sendRequest: String { tr ? "İstek gönder" : "Send request" }
+    static var requestSent: String { tr ? "İstek gönderildi." : "Request sent." }
+    static var userNotFound: String { tr ? "Bu kullanıcı adı bulunamadı." : "No user with that username." }
+    static var sessionsShort: String { tr ? "oturum" : "sessions" }
+    static var removeFriend: String { tr ? "Arkadaşlıktan çıkar" : "Remove friend" }
+    static var blockUser: String { tr ? "Kullanıcıyı engelle" : "Block user" }
+    static var reportUser: String { tr ? "Şikayet et" : "Report" }
+    static var reportUserTitle: String { tr ? "Neden şikayet ediyorsun?" : "Why are you reporting?" }
+    static var reportReasons: [String] {
+        tr ? ["Uygunsuz kullanıcı adı", "Taciz veya hakaret", "Sahte hesap", "Diğer"]
+           : ["Inappropriate username", "Harassment or abuse", "Fake account", "Other"]
+    }
+    static var usernameNotAllowed: String {
+        tr ? "Bu kullanıcı adı kullanılamaz, başka bir tane seç."
+           : "That username isn't allowed, please pick another."
+    }
+
     static var signOut: String { tr ? "Çıkış yap" : "Sign out" }
     static var deleteAccount: String { tr ? "Hesabı sil" : "Delete account" }
     static var deleteAccountConfirm: String {

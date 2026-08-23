@@ -87,6 +87,21 @@ dışarı iletmek; yalnızca cihazda saklamak toplama sayılmaz.
 4. **KVKK/GDPR**: veri sorumlusu olunacak; silme talebi akışı hesap silmeyle karşılanıyor.
 5. **Sign in with Apple** capability'si App ID'de açık olmalı (aşağıya bak).
 
+## Uçtan uca test — yalnızca gerçek cihazda yapılabilir
+
+Simülatörde Apple ile giriş, cihazda bir Apple hesabı oturumu gerektiriyor;
+şifre girmeyi gerektirdiği için bu adım geliştirici tarafından yapılmalı.
+Test sırası:
+
+1. Xcode'dan telefona kur, Tablo sekmesine gir, **Apple ile giriş yap**
+2. Kullanıcı adı belirle → Supabase `profiles` tablosunda satır oluşmalı
+3. Sayaçla bir-iki oturum tamamla, Tablo sekmesini aç → `weekly_scores` dolmalı
+4. İkinci bir cihaz/Apple hesabıyla ikinci kullanıcı oluştur
+5. Birinden diğerine **arkadaş isteği** gönder, diğerinde kabul et
+6. İki kullanıcı da tabloda birbirini görmeli, kısa ortalama üstte olmalı
+7. **Engelle** ve **şikayet et** akışlarını dene; `reports` tablosuna satır düşmeli
+8. Ayarlar → **Hesabı sil** → `profiles` satırı ve bağlı kayıtlar silinmeli
+
 ## Supabase — yapılan ve kalan
 
 **Bağlandı:** `SupabaseConfig` proje URL'si ve anon anahtarıyla dolu.
