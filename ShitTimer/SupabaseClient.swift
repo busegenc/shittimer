@@ -27,8 +27,9 @@ actor SupabaseClient {
             switch self {
             case .notConfigured: return L10n.serverNotConfigured
             case .noSession: return L10n.sessionExpired
-            case .http(let code, let message):
-                // Sunucudan gelen ham mesajı kullanıcıya göstermiyoruz
+            case .http(let code, _):
+                // Sunucudan gelen ham mesaj kullanıcıya gösterilmez; yalnızca
+                // benzersizlik çakışması (409) anlamlı bir mesaja çevrilir.
                 return code == 409 ? L10n.usernameTaken : L10n.serverError
             case .decoding: return L10n.serverError
             }
