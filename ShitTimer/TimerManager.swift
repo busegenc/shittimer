@@ -49,7 +49,12 @@ final class TimerManager: ObservableObject {
             startDate = saved
             isRunning = true
             elapsed = Date().timeIntervalSince(saved)
-            if !abandonIfPastSanityCap() { startTicker() }
+            if !abandonIfPastSanityCap() {
+                startTicker()
+                if #available(iOS 16.2, *) {
+                    LiveActivityManager.adoptExistingOrStart(startDate: saved, stage: stage)
+                }
+            }
         }
         #if DEBUG
         if CommandLine.arguments.contains("--autostart"), !isRunning {
@@ -82,6 +87,7 @@ final class TimerManager: ObservableObject {
         isRunning = true
         startTicker()
         requestPermissionAndSchedule()
+        if #available(iOS 16.2, *) { LiveActivityManager.start(startDate: now) }
     }
 
     private func stop() {
@@ -93,6 +99,7 @@ final class TimerManager: ObservableObject {
         self.startDate = nil
         defaults.removeObject(forKey: activeStartKey)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        if #available(iOS 16.2, *) { LiveActivityManager.end() }
 
         // 10 saniyeden kısa oturumları kaydetme (yanlışlıkla basılma)
         if duration >= 10 {
@@ -154,6 +161,7 @@ final class TimerManager: ObservableObject {
         startDate = nil
         defaults.removeObject(forKey: activeStartKey)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        if #available(iOS 16.2, *) { LiveActivityManager.end() }
         elapsed = 0
         currentTaunt = nil
         lastStageShown = 0
@@ -188,6 +196,9 @@ final class TimerManager: ObservableObject {
         guard s != lastStageShown else { return }
         lastStageShown = s
         currentTaunt = s > 0 ? MessagePool.nextMessage(for: Threshold.allCases[s - 1]) : nil
+        if #available(iOS 16.2, *), let startDate {
+            LiveActivityManager.update(stage: s, startDate: startDate)
+        }
     }
 
     // MARK: - Bildirimler
