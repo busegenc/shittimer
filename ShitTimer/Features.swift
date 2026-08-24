@@ -13,15 +13,9 @@ enum Features {
     /// ve yeni sürümü gönder; ürün App Store Connect'te zaten hazır.
     static let themePackEnabled = false
 
-    /// Hesap + tablo (leaderboard).
-    ///
-    /// Şu an yalnızca giriş, kullanıcı adı ve kendi satırın çalışıyor; arkadaş
-    /// listesi gerçek bir arka uç bağlandığında açılacak. Yayına almadan önce
-    /// yapılması gerekenler için bkz. LEADERBOARD.md.
-    static var accountsEnabled: Bool {
-        #if DEBUG
-        if CommandLine.arguments.contains("--accounts") { return true }
-        #endif
-        return false
-    }
+    /// Hesap + tablo (leaderboard). Apple ile giriş, Supabase arka uç,
+    /// arkadaş ekleme, engelleme/şikayet — hepsi bağlı ve doğrulandı.
+    /// Açık olduğu sürümde App Privacy beyanı "Data Not Collected" değil,
+    /// LEADERBOARD.md'deki tabloya göre olmalı.
+    static let accountsEnabled = true
 }

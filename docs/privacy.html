@@ -25,28 +25,41 @@
 <body>
 
 <h1>Gizlilik Politikası</h1>
-<p class="updated">Sit Happens · Son güncelleme: 26 Temmuz 2026</p>
+<p class="updated">Sit Happens · Son güncelleme: 24 Ağustos 2026</p>
 
 <h2>Kısaca</h2>
-<p><strong>Sit Happens hiçbir kişisel veri toplamaz.</strong> Hesap açmanız gerekmez, uygulama sunucuya veri göndermez, üçüncü taraf analiz veya reklam araçları kullanmaz.</p>
+<p>Sayaç ve istatistikler tamamen cihazınızda kalır. <strong>Tablo (leaderboard) özelliğini kullanmayı seçersen</strong> — yani Apple ile giriş yapıp bir kullanıcı adı belirlersen — kullanıcı adın ve haftalık oturum ortalaman, kabul ettiğin arkadaşlarınla karşılaştırılabilmesi için sunucuda saklanır. Bu özelliği hiç kullanmazsan hiçbir veri cihazınızdan çıkmaz. Reklam veya üçüncü taraf analiz aracı kullanılmaz.</p>
 
 <h2>Cihazınızda kalan veriler</h2>
-<p>Uygulama şunları yalnızca telefonunuzda saklar:</p>
+<p>Uygulama şunları her durumda yalnızca telefonunuzda saklar:</p>
 <ul>
   <li>Başlattığınız oturumların başlangıç zamanı ve süresi (istatistikler için)</li>
   <li>Seçtiğiniz tema ve tema paketinin açık olup olmadığı bilgisi</li>
   <li>Aynı bildirim metninin arka arkaya tekrarlanmaması için son gösterilen mesajın sırası</li>
 </ul>
-<p>Bu veriler iOS'un standart <em>UserDefaults</em> deposunda tutulur, cihazdan dışarı çıkmaz. Uygulamayı silmeniz halinde tamamen kaybolur.</p>
+<p>Bu veriler iOS'un standart <em>UserDefaults</em> deposunda tutulur. Uygulamayı silmeniz halinde tamamen kaybolur.</p>
+
+<h2>Tablo (leaderboard) özelliğini kullanırsan</h2>
+<p>Bu özellik isteğe bağlıdır; kullanmak için Apple veya Google ile giriş yapıp bir kullanıcı adı belirlemen gerekir. Giriş yaptığında:</p>
+<ul>
+  <li><strong>Sağlayıcı kimliği</strong> — Apple/Google'ın sana verdiği, hesabını tanımlayan benzersiz kod. E-posta adresini istemiyoruz ve saklamıyoruz.</li>
+  <li><strong>Kullanıcı adı</strong> — kendi seçtiğin, kabul ettiğin arkadaşlarına ve (istek gönderdiğinde) onlara görünen ad.</li>
+  <li><strong>Haftalık oturum ortalaman ve oturum sayın</strong> — yalnızca kabul ettiğin arkadaşların görebileceği şekilde saklanır.</li>
+  <li><strong>Arkadaşlık istekleri, engellemeler ve şikayetler</strong> — kötüye kullanımı önlemek için.</li>
+</ul>
+<p>Bu veriler veritabanı sağlayıcımız Supabase'in sunucularında, hesabınla ilişkilendirilmiş olarak saklanır. Veriler yalnızca kabul ettiğin arkadaşlarına görünür; genel/herkese açık bir sıralama yoktur. İstediğin an <strong>Ayarlar → Hesabı Sil</strong> ile hesabını ve bu verilerin tamamını kalıcı olarak silebilirsin.</p>
 
 <h2>Bildirimler</h2>
 <p>Bildirimler cihazınızda üretilir ve zamanlanır (yerel bildirim). Bildirim gönderilmesi için hiçbir sunucuya bilgi iletilmez.</p>
+
+<h2>Kilit ekranı / Dynamic Island sayacı</h2>
+<p>Bu özellik (ActivityKit / Live Activities) tamamen cihaz üzerinde çalışır, sunucuya veri göndermez.</p>
 
 <h2>Satın almalar</h2>
 <p>Tema paketi satın alması Apple'ın App Store altyapısı üzerinden yapılır. Ödeme bilgilerinizi biz görmez, saklamaz ve işlemeyiz; işlem tamamen Apple ile aranızdadır. Uygulama yalnızca satın almanın geçerli olup olmadığını Apple'dan öğrenir.</p>
 
 <h2>Çocuklar</h2>
-<p>Uygulama çocuklardan bilerek veri toplamaz; zaten hiç kimseden veri toplamamaktadır.</p>
+<p>Uygulama çocuklardan bilerek veri toplamaz.</p>
 
 <h2>Değişiklikler</h2>
 <p>Bu politika güncellenirse bu sayfadaki tarih değiştirilir.</p>
@@ -57,10 +70,28 @@
 <hr>
 
 <h2 id="en">Privacy Policy (English)</h2>
-<p><strong>Sit Happens collects no personal data.</strong> There is no account, no server, and no third-party analytics or advertising.</p>
-<p>The app stores the following <strong>only on your device</strong>, in the standard iOS <em>UserDefaults</em> store: your session start times and durations, your selected theme and whether the Theme Pack is unlocked, and the index of the last shown message so it isn't repeated back to back. Deleting the app removes all of it.</p>
+<p>Your timer sessions and stats stay entirely on your device. <strong>If you choose to use the Leaderboard feature</strong> — signing in and picking a username — your username and weekly session average are stored on a server so they can be compared with friends you've accepted. If you never use that feature, nothing leaves your device. We don't use ads or third-party analytics.</p>
+<p>The app always stores the following <strong>only on your device</strong>, in the standard iOS <em>UserDefaults</em> store: your session start times and durations, your selected theme and whether the Theme Pack is unlocked, and the index of the last shown message so it isn't repeated back to back. Deleting the app removes all of it.</p>
+
+<h2>If you use the Leaderboard feature</h2>
+<p>This feature is optional; using it requires signing in with Apple or Google and picking a username. Once signed in, we store:</p>
+<ul>
+  <li><strong>Provider identifier</strong> — the unique ID Apple/Google issues to identify your account. We don't request or store your email address.</li>
+  <li><strong>Username</strong> — the one you choose, visible to friends you've accepted (and to anyone you send a friend request to).</li>
+  <li><strong>Your weekly session average and session count</strong> — visible only to friends you've accepted.</li>
+  <li><strong>Friend requests, blocks, and reports</strong> — used to prevent abuse.</li>
+</ul>
+<p>This data is stored on our database provider Supabase's servers, tied to your account. It's visible only to friends you've accepted — there's no public or global leaderboard. You can permanently delete your account and all of this data anytime from <strong>Settings → Delete Account</strong>.</p>
+
+<h2>Notifications</h2>
 <p>Notifications are generated and scheduled locally on your device; nothing is sent to any server.</p>
+
+<h2>Lock Screen / Dynamic Island counter</h2>
+<p>This feature (ActivityKit / Live Activities) runs entirely on-device and doesn't send data to any server.</p>
+
+<h2>Purchases</h2>
 <p>The Theme Pack purchase is handled entirely by Apple's App Store. We never see, store, or process your payment details — the app only learns from Apple whether the purchase is valid.</p>
+
 <p>If this policy changes, the date at the top of this page will be updated. Contact: <a href="mailto:buse.genc@ceng.ktu.edu.tr">buse.genc@ceng.ktu.edu.tr</a></p>
 
 <footer>© 2026 Buse Genç</footer>

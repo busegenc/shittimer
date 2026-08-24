@@ -268,10 +268,13 @@ yukarıdaki paragrafları ve 04/05 ekran görüntülerini geri ekle.
 
 ---
 
-## 1.1 sürümü — What's New metni
+## 1.1 sürümü — What's New metni (build 7)
 
 **Türkçe**
 ```
+• Kilit ekranında ve Dynamic Island'da canlı sayaç
+• Sayacı açık unutursan artık haber veriyoruz: 30 dakikadan sonra düzenli
+  hatırlatmalar, 2 saati geçen oturumlar otomatik sıfırlanıyor
 • Ayarlar sayfası eklendi
 • Uygulama dilini artık cihazdan bağımsız seçebilirsin: Sistem dili, Türkçe veya English
 • Bildirim zamanlaması düzeltildi: eşikler artık geçen süreye göre hesaplanıyor
@@ -279,9 +282,26 @@ yukarıdaki paragrafları ve 04/05 ekran görüntülerini geri ekle.
 
 **English**
 ```
+• Live counter on the Lock Screen and Dynamic Island
+• We'll nag you if you forget the timer running: regular reminders after
+  30 minutes, sessions over 2 hours reset automatically
 • New Settings page
 • You can now pick the app language independently of your device: System, Turkish or English
 • Fixed notification scheduling: thresholds are now calculated from elapsed time
 ```
 
-Ekran görüntüsü değişikliği gerekmiyor — mevcut ekranların görünümü aynı.
+Ekran görüntüsü değişikliği gerekmiyor (isteğe bağlı: Dynamic Island/kilit ekranı görselini
+ek pazarlama görseli olarak eklemek istersen `marketing/screenshots/`e yeni bir kare eklenebilir,
+ama App Store bunu zorunlu kılmıyor).
+
+## 1.1 için App Review Information'a eklenecek not
+
+Mevcut notların sonuna ekle (IAP ve veri toplama ile ilgili önceki metin hâlâ geçerli,
+sadece şunu ekle):
+
+```
+Bu sürüm ayrıca kilit ekranı / Dynamic Island'da canlı bir sayaç gösterir (ActivityKit,
+yalnızca yerel — push/APNs kullanılmaz). Sayaç başlatıldığında sistem bir "Canlı
+Etkinliklere izin ver" istemi gösterir; bu App Store'un standart Live Activity izin
+akışıdır. Bu özellik de dahil hiçbir yeni veri toplama veya sunucu bağlantısı yoktur.
+```
