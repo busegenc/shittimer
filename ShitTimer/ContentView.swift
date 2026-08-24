@@ -113,6 +113,11 @@ struct TimerView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView(theme: theme, store: store)
         }
+        .alert(L10n.autoEndedTitle, isPresented: $timerManager.autoEndedNotice) {
+            Button(L10n.ok) {}
+        } message: {
+            Text(L10n.autoEndedMessage)
+        }
     }
 
     // MARK: - Parçalar

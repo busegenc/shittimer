@@ -150,9 +150,33 @@ enum MessagePool {
     /// Eşik için rastgele mesaj döndürür; aynı mesajın arka arkaya
     /// gelmemesi için son kullanılan indeks UserDefaults'ta tutulur.
     static func nextMessage(for threshold: Threshold) -> String {
-        let pool = (isTurkish ? tr : en)[threshold] ?? []
+        pick(from: (isTurkish ? tr : en)[threshold] ?? [], key: "lastMessageIndex.\(threshold.rawValue)")
+    }
+
+    /// 30 dakikadan sonra sayaç açık unutulursa tekrar eden hatırlatma havuzu.
+    private static let nagTR = [
+        "Bu artık endişe verici. İyi misin?",
+        "Telefonun İnternet'i orada mı bu kadar iyi, yoksa gerçekten kayıp mı oldun?",
+        "Aile grup sohbetine 'başımıza bir şey mi geldi' yazılmasına ramak kaldı.",
+        "Bu noktada bir arama ekibi düşünülebilir.",
+        "Hâlâ oradaysan lütfen bir işaret ver.",
+        "Bu artık rekor değil, vaka."
+    ]
+    private static let nagEN = [
+        "This is genuinely concerning now. You okay?",
+        "Is the Wi-Fi that good in there, or are you actually lost?",
+        "The family group chat is one message away from panic.",
+        "At this point a search party isn't a joke anymore.",
+        "If you're still there, please send some kind of sign of life.",
+        "This stopped being a personal record and became a situation."
+    ]
+
+    static func nextNagMessage() -> String {
+        pick(from: isTurkish ? nagTR : nagEN, key: "lastNagIndex")
+    }
+
+    private static func pick(from pool: [String], key: String) -> String {
         guard !pool.isEmpty else { return "" }
-        let key = "lastMessageIndex.\(threshold.rawValue)"
         let last = UserDefaults.standard.object(forKey: key) as? Int
         var candidates = Array(pool.indices)
         if let last, candidates.count > 1 {
@@ -190,6 +214,16 @@ enum L10n {
            : "Notifications are off — you'll miss the nudges. Enable them in Settings."
     }
     static var lastSession: String { tr ? "Son oturum" : "Last session" }
+    static var capNoticeMessage: String {
+        tr ? "2 saat oldu, bu sayacı senin için sıfırladık. Gerçekten oradaysan iyi olduğundan emin ol."
+           : "It's been 2 hours — we reset the timer for you. If you're really still in there, please make sure you're okay."
+    }
+    static var autoEndedTitle: String { tr ? "Sayaç sıfırlandı" : "Timer reset" }
+    static var autoEndedMessage: String {
+        tr ? "İki saati geçtiği için oturum otomatik sonlandırıldı ve istatistiklere eklenmedi."
+           : "The session passed two hours, so it was automatically ended and wasn't added to your stats."
+    }
+    static var ok: String { tr ? "Tamam" : "OK" }
 
     // Tema paketi / satın alma
     static var storeTitle: String { tr ? "Tema Paketi" : "Theme Pack" }

@@ -49,6 +49,12 @@
             ReferencedContainer = "container:ShitTimer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "--accounts"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <StoreKitConfigurationFileReference
          identifier = "../../../ShitTimer.storekit">
       </StoreKitConfigurationFileReference>

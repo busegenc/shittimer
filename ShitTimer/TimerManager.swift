@@ -17,6 +17,9 @@ final class TimerManager: ObservableObject {
     @Published var notificationsDenied = false
     /// Eşik aşıldığında ekranda gösterilen laf (bildirimin uygulama içi karşılığı)
     @Published var currentTaunt: String?
+    /// Sayaç akıl sağlığı sınırını (bkz. sanityCapSeconds) aşınca bir kez true olur;
+    /// arayüz bunu gösterip kullanıcı kapatınca false'a döner.
+    @Published var autoEndedNotice = false
 
     private var lastStageShown = 0
     private var startDate: Date?
@@ -46,11 +49,14 @@ final class TimerManager: ObservableObject {
             startDate = saved
             isRunning = true
             elapsed = Date().timeIntervalSince(saved)
-            startTicker()
+            if !abandonIfPastSanityCap() { startTicker() }
         }
         #if DEBUG
         if CommandLine.arguments.contains("--autostart"), !isRunning {
             toggle()
+        }
+        if CommandLine.arguments.contains("--force-autoended") {
+            DispatchQueue.main.async { [weak self] in self?.autoEndedNotice = true }
         }
         #endif
     }
@@ -104,9 +110,60 @@ final class TimerManager: ObservableObject {
             Task { @MainActor in
                 guard let self, let startDate = self.startDate else { return }
                 self.elapsed = Date().timeIntervalSince(startDate)
+                if self.abandonIfPastSanityCap() { return }
                 self.refreshTauntIfNeeded()
             }
         }
+    }
+
+    // MARK: - Akıl sağlığı sınırı
+
+    #if DEBUG
+    private var sanityCapSeconds: TimeInterval {
+        CommandLine.arguments.contains("--fast-thresholds") ? 90 : 2 * 3600
+    }
+    private var nagIntervalSeconds: TimeInterval {
+        CommandLine.arguments.contains("--fast-thresholds") ? 8 : 20 * 60
+    }
+    #else
+    private let sanityCapSeconds: TimeInterval = 2 * 3600
+    private let nagIntervalSeconds: TimeInterval = 20 * 60
+    #endif
+
+    /// 30 dakika eşiğinden `sanityCapSeconds`e kadar, `nagIntervalSeconds`
+    /// aralıklarla tekrarlanan hatırlatma zamanları.
+    private var nagOffsetsSeconds: [TimeInterval] {
+        var offset = Threshold.thirtyMin.seconds + nagIntervalSeconds
+        var offsets: [TimeInterval] = []
+        while offset < sanityCapSeconds {
+            offsets.append(offset)
+            offset += nagIntervalSeconds
+        }
+        return offsets
+    }
+
+    /// Sayaç sınırı aştıysa oturumu istatistiklere eklemeden sonlandırır.
+    /// Kullanıcı unutup gitmiş bir sayacın kalıcı olarak istatistikleri
+    /// bozmasını engeller. `true` dönerse oturum artık çalışmıyor demektir.
+    @discardableResult
+    private func abandonIfPastSanityCap() -> Bool {
+        guard isRunning, elapsed >= sanityCapSeconds else { return false }
+        ticker?.invalidate()
+        ticker = nil
+        isRunning = false
+        startDate = nil
+        defaults.removeObject(forKey: activeStartKey)
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        elapsed = 0
+        currentTaunt = nil
+        lastStageShown = 0
+        // SwiftUI'nin .alert'i, ilk render'dan önce zaten true olan bir değeri
+        // güvenilir göstermeyebiliyor (false→true geçişi bekliyor). init()
+        // içinden tetiklendiğinde (uygulama saatler sonra yeniden açıldığında)
+        // görünüm henüz yokken bu satır çalışır; bir sonraki run loop turuna
+        // erteleyerek her durumda gerçek bir geçiş sağlanır.
+        DispatchQueue.main.async { [weak self] in self?.autoEndedNotice = true }
+        return true
     }
 
     // MARK: - Eşik durumu
@@ -159,19 +216,38 @@ final class TimerManager: ObservableObject {
     private func scheduleNotifications() {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
+
         for threshold in Threshold.allCases {
             // Geçmiş eşikler yeniden zamanlanmaz
             let remaining = threshold.seconds - elapsed
             guard remaining > 0 else { continue }
-            let content = UNMutableNotificationContent()
-            content.title = L10n.appTitle
-            content.body = MessagePool.nextMessage(for: threshold)
-            content.sound = .default
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: remaining, repeats: false)
-            let request = UNNotificationRequest(id: "threshold-\(threshold.rawValue)",
-                                                content: content, trigger: trigger)
-            center.add(request)
+            schedule(id: "threshold-\(threshold.rawValue)", after: remaining,
+                    body: MessagePool.nextMessage(for: threshold))
         }
+
+        // 30 dakikadan sonra sayaç açık unutulursa sessizliğe düşülmesin diye
+        // sınıra kadar tekrarlayan hatırlatmalar
+        for (index, offset) in nagOffsetsSeconds.enumerated() {
+            let remaining = offset - elapsed
+            guard remaining > 0 else { continue }
+            schedule(id: "nag-\(index)", after: remaining, body: MessagePool.nextNagMessage())
+        }
+
+        // Sınıra ulaşınca: oturum otomatik sonlanacağını haber ver
+        let capRemaining = sanityCapSeconds - elapsed
+        if capRemaining > 0 {
+            schedule(id: "cap-notice", after: capRemaining, body: L10n.capNoticeMessage)
+        }
+    }
+
+    private func schedule(id: String, after interval: TimeInterval, body: String) {
+        let content = UNMutableNotificationContent()
+        content.title = L10n.appTitle
+        content.body = body
+        content.sound = .default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: interval, repeats: false)
+        UNUserNotificationCenter.current().add(
+            UNNotificationRequest(id: id, content: content, trigger: trigger))
     }
 
     // MARK: - İstatistikler
