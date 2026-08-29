@@ -4,9 +4,19 @@ struct ContentView: View {
     @EnvironmentObject var timerManager: TimerManager
     @EnvironmentObject var store: StoreManager
     @AppStorage("appTheme") private var themeRaw = AppTheme.classic.rawValue
-    @StateObject private var accountStore = AccountStore()
+    @StateObject private var accountStore = AccountStore(backend: Self.demoBackend)
     @StateObject private var boardStore = LeaderboardStore(
-        backend: SupabaseConfig.isConfigured ? SupabaseBackend() : LocalAccountBackend())
+        backend: Self.demoBackend ?? (SupabaseConfig.isConfigured ? SupabaseBackend() : LocalAccountBackend()))
+
+    /// Ekran kaydı / demo çekimi için: gerçek Apple ID akışına hiç girmeden
+    /// tablo yapısını göstermek üzere yerel sahte veriyle çalışır.
+    private static var demoBackend: AppBackend? {
+        #if DEBUG
+        return CommandLine.arguments.contains("--force-local-backend") ? LocalAccountBackend() : nil
+        #else
+        return nil
+        #endif
+    }
     @State private var selectedTab = Self.initialTab
     /// Dil değişince metinler yeniden hesaplansın diye kökte dinleniyor
     @AppStorage(AppLanguage.storageKey) private var languageRaw = AppLanguage.system.rawValue

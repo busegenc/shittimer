@@ -184,11 +184,43 @@ struct SupabaseBackend: AppBackend {
 
 extension LocalAccountBackend: LeaderboardBackend {
     func submitWeeklyScore(avgSeconds: Int, sessionCount: Int) async throws {}
-    func friendsLeaderboard() async throws -> [LeaderboardEntry] { [] }
-    func findUser(username: String) async throws -> LeaderboardEntry? { nil }
-    func sendFriendRequest(to userId: String) async throws { throw AccountError.notConfigured }
+
+    /// Ekran kaydı için: --force-local-backend ile birlikte --seed-friends
+    /// verilirse birkaç sahte arkadaş satırı gösterir.
+    func friendsLeaderboard() async throws -> [LeaderboardEntry] {
+        #if DEBUG
+        guard CommandLine.arguments.contains("--seed-friends") else { return [] }
+        return [
+            LeaderboardEntry(userId: "demo-1", username: "elif", avgSeconds: 340, sessionCount: 5),
+            LeaderboardEntry(userId: "debug", username: "buse", avgSeconds: 455, sessionCount: 6),
+            LeaderboardEntry(userId: "demo-2", username: "kaan", avgSeconds: 610, sessionCount: 4)
+        ]
+        #else
+        return []
+        #endif
+    }
+
+    func findUser(username: String) async throws -> LeaderboardEntry? {
+        #if DEBUG
+        guard CommandLine.arguments.contains("--seed-friends") else { return nil }
+        return LeaderboardEntry(userId: "demo-3", username: username, avgSeconds: 0, sessionCount: 0)
+        #else
+        return nil
+        #endif
+    }
+
+    func sendFriendRequest(to userId: String) async throws {}
     func respondToRequest(from userId: String, accept: Bool) async throws {}
-    func pendingRequests() async throws -> [LeaderboardEntry] { [] }
+
+    func pendingRequests() async throws -> [LeaderboardEntry] {
+        #if DEBUG
+        guard CommandLine.arguments.contains("--seed-friends") else { return [] }
+        return [LeaderboardEntry(userId: "demo-4", username: "mert", avgSeconds: 0, sessionCount: 0)]
+        #else
+        return []
+        #endif
+    }
+
     func removeFriend(_ userId: String) async throws {}
     func blockUser(_ userId: String) async throws {}
     func report(userId: String, reason: String) async throws {}
